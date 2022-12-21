@@ -5,10 +5,8 @@ import pandas as pd
 import great_expectations as ge
 import os
 
-token = '88a8082bcaf90a3861d709f8f4c7f590af979649'
 city = 'warsaw'
-# os.environ['HOPSWORKS_API_KEY']='H4jq0tWZcabxEqJMr.gHW39QLRm1m2eK7uF3AcCqdHTjGqoRaRLbkacGa9j9OzuJPqP3BfbtrbOLnfqT8D'
-print(os.environ.get('HOPSWORKS_API_KEY'))
+token = os.environ.get('AQI_TOKEN')
 
 response = requests.get('https://api.waqi.info/feed/{}/?token={}'.format(city, token))
 response = json.loads(response.content)['data']
