@@ -1,1 +1,1 @@
-# MLOops-SKNI
+# MLOps-SKNI

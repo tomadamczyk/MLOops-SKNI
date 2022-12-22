@@ -2,3 +2,5 @@ hsfs[python]
 hopsworks
 scikit-learn
 plotly
+joblib
+pandas
