@@ -1,13 +1,9 @@
 # MLOps-SKNI
-
-## Air quality prediction for Warsaw 
-![AQI](aqi.png)
-
 ## Architektura
 ![AQI](img/1.png)
 Wymagania: bezpłatne konta na app.hopsworks.ai i github.com.
 
-PLiki:
+Pliki:
 1. Github Actions: .github/workflows/*.yml każdorazowo przygotowują środowisko uruchomieniowe i wywołują określone skrypty:
 	- features-pipeline.yml - w 30 minucie każdej godziny uruchamia skrypt features.py,
 	- prediction-pipeline.yml - raz dziennie (o 1 w nocy) uruchamia skrypt predict.py i aktualizuje wykres w repozytorium,
@@ -20,5 +16,10 @@ PLiki:
 
 ## Kilka linków
 Hopsworks Feature Store: https://docs.hopsworks.ai/feature-store-api/latest/
+
 Dokumentacja Github Actions: https://docs.github.com/en/actions/quickstart
+
 AQI: https://aqicn.org
+
+## Air quality prediction for Warsaw 
+![AQI](aqi.png)
