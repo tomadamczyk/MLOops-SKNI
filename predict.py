@@ -10,12 +10,14 @@ import plotly.express as px
 
 project = hopsworks.login()
 fs = project.get_feature_store()
+
+# Get model
 mr = project.get_model_registry()
 model = mr.get_models("poly_air")[-1]
 model_dir = model.download()
 model = joblib.load(model_dir + "/polynomial_model.pkl")
 
-
+# Get data
 air_fg = fs.get_feature_group("airquality", version=6)
 query = air_fg.select(['aqi', 'co', 'no2', 'pm10', 'pm25', 'time'])
 try: 
@@ -38,9 +40,12 @@ X_train, X_test, y_train, y_test = fv.get_train_test_split(td_version)
 
 y = np.array(y_train['aqi'])
 X = np.array(range(len(y))).reshape(-1, 1)
+
+# Make predictions
 prediction = model.predict(np.array(range(len(y), len(y)+12)).reshape(-1,1))
 print(prediction)
 
+# Create a graph
 fig = px.scatter()
 fig.add_scatter(x=np.array(range(0, len(y))), y=np.array(y_train['aqi']), name='AQI values from the past.')
 fig.add_scatter(x=np.array(range(len(y), len(y)+12)), y=prediction, name='AQI prediction for the next 12 hours')

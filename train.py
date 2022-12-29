@@ -9,10 +9,15 @@ from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LinearRegression
 import joblib
 
+
 project = hopsworks.login()
+
+# Connect to feature group
 fs = project.get_feature_store()
 air_fg = fs.get_feature_group("airquality", version=6)
 query = air_fg.select(['aqi', 'co', 'no2', 'pm10', 'pm25', 'time'])
+
+# Get or create feature view
 try: 
 	fv = fs.get_feature_view("airwarsaw", version=2)
 except:	
@@ -22,7 +27,7 @@ except:
 	                            labels=['aqi', 'co', 'no2', 'pm10', 'pm25', 'time'],
 	                            query=query)
 
-
+# Get data from the feature view
 td_version, td_job = fv.create_train_test_split(
     description = 'training data',
     data_format = 'csv',
@@ -32,9 +37,11 @@ td_version, td_job = fv.create_train_test_split(
 
 X_train, X_test, y_train, y_test = fv.get_train_test_split(td_version)
 
+# Get training data
 y = np.array(y_train['aqi'])
 X = np.array(range(len(y))).reshape(-1, 1)
 
+# Train a model
 degree=3
 model=make_pipeline(PolynomialFeatures(degree),LinearRegression())
 model.fit(X, y)
@@ -46,15 +53,15 @@ metrics = {
     "rmse" : 1.0
 }
 
-
+# Connect to model registry
 mr = project.get_model_registry()
     
+# Save model localy
 joblib.dump(model, 'polynomial_model.pkl')
 
-
+# Save model on Hopsworks
 knn_model = mr.python.create_model(
     name="poly_air", 
     metrics=metrics,
     description="Polynomial regression for air quality prediction.")
-
 knn_model.save('polynomial_model.pkl')
